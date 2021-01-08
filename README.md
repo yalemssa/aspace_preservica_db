@@ -7,8 +7,9 @@ A description of the tables in the database and how they are generated
 ### `archival_object`
 This table is populated by running the `archival_object_table.sql` query against the ArchivesSpace database.
 
+
 | Column | Description | Type |
-| —————— | ——————————— | ———— |
+| ------------ | ------------ | ------------ |
 | id | The archival object id | int |
 | repo_id | The repository id | int |
 | root_record_id | The parent resource id | int |
