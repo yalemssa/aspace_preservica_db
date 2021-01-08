@@ -7,21 +7,22 @@ A description of the tables in the database and how they are generated
 ### `archival_object`
 This table is populated by running the `archival_object_table.sql` query against the ArchivesSpace database.
 
-::Column				Description				        Type::
-id						The archival object id			int
-repo_id					The repository id				int
-root_record_id			The parent resource id	 	int
-parent_id				The parent archival object		int
-ref_id					The ref id					varchar(255)
-component_id			The component unique id		varchar(255)
-title						The archival object title		varchar(8704)
-publish					1 published, 0 unpublished	int
-level					Hierarchical level (i.e. file)		varchar(255)
-preservica_collection_id	Found in the note field		varchar(255)
-extent					Concatenated extent value	varchar(255)
-physical_containers		Concatenated container data	mediumtext
-create_time				ArchivesSpace creation time	timestamp
-m_time					ArchivesSpace last modified	timestamp
+| Column | Description | Type |
+| —————— | ——————————— | ———— |
+| id | The archival object id | int |
+| repo_id | The repository id | int |
+| root_record_id | The parent resource id | int |
+| parent_id | The parent archival object | int |
+| ref_id | The ref id | varchar(255) |
+| component_id | The component unique id | varchar(255) |
+| title | The archival object title | varchar(8704) |
+| publish | 1 published, 0 unpublished | int |
+| level | Hierarchical level (i.e. file) | varchar(255) |
+| preservica_collection_id | Found in the note field | varchar(255) |
+| extent | Concatenated extent value | varchar(255) |
+| physical_containers | Concatenated container data | mediumtext |
+| create_time | ArchivesSpace creation time | timestamp |
+| m_time | ArchivesSpace last modified | timestamp |
 
 ### `digital_object`
 This table is populated by running the `digital_object_table.sql` query against the ArchivesSpace database.
