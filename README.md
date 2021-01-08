@@ -1,5 +1,5 @@
 # aspace_preservica_db
-An ETL database for collating and doing stuff with ArchivesSpace and Preservica metadata
+A reporting database for collating and doing stuff with ArchivesSpace and Preservica metadata
 
 ## Tables
 A description of the tables in the database and how they are generated
@@ -8,27 +8,28 @@ A description of the tables in the database and how they are generated
 This table is populated by running the `archival_object_table.sql` query against the ArchivesSpace database.
 
 
-| Column | Description | Type |
-| ------------ | ------------ | ------------ |
-| id | The archival object id | int |
-| repo_id | The repository id | int |
-| root_record_id | The parent resource id | int |
-| parent_id | The parent archival object | int |
-| ref_id | The ref id | varchar(255) |
-| component_id | The component unique id | varchar(255) |
-| title | The archival object title | varchar(8704) |
-| publish | 1 published, 0 unpublished | int |
-| level | Hierarchical level (i.e. file) | varchar(255) |
-| preservica_collection_id | Found in the note field | varchar(255) |
-| extent | Concatenated extent value | varchar(255) |
-| physical_containers | Concatenated container data | mediumtext |
-| create_time | ArchivesSpace creation time | timestamp |
-| m_time | ArchivesSpace last modified | timestamp |
+| Column                   | Description       				| Type         |
+| ------------------------ | ------------------------------ | ------------ |
+| id                       | The archival object id 		| int		   |
+| repo_id                  | The repository id 				| int 		   |
+| root_record_id           | The parent resource id 		| int 		   |
+| parent_id                | The parent archival object 	| int          |
+| ref_id                   | The ref id 					| varchar(255) |
+| component_id             | The component unique id 		| varchar(255) |
+| title                    | The archival object title 		| varchar(8704)|
+| publish                  | 1 published, 0 unpublished 	| int 		   |
+| level                    | Hierarchical level (i.e. file) | varchar(255) |
+| preservica_collection_id | Found in the note field 		| varchar(255) |
+| extent                   | Concatenated extent value		| varchar(255) |
+| physical_containers      | Concatenated container data    | mediumtext   |
+| create_time              | ArchivesSpace creation time    | timestamp    |
+| m_time                   | ArchivesSpace last modified    | timestamp    |
 
 ### `digital_object`
 This table is populated by running the `digital_object_table.sql` query against the ArchivesSpace database.
 
-::Column				Description				        Type::
+| Column | Description | Type |
+| ------------ | ------------ | ------------ |
 id						The digital object id			int
 digital_object_id			The Preservica DelUnit id		varchar(255)
 archival_object_id		The linked record id		 	int
@@ -41,7 +42,8 @@ m_time					ArchivesSpace creation time	timestamp
 ### `resource`
 This table is populated by running the `resource_table.sql` query against the ArchivesSpace database.
 
-::Column				Description				        Type::
+| Column | Description | Type |
+| ------------ | ------------ | ------------ |
 id						The resource id				int
 call_number				The call number				varchar(255)
 title						The resource title				varchar(8704)
@@ -53,39 +55,44 @@ m_time					ArchivesSpace creation time	timestamp
 ### `restriction`
 This table is populated by running the `restrictions_table.sql` query against the ArchivesSpace database. This query can only be run on a local/test version of YUL ArchivesSpace, as it requires SQL common table expressions (CTEs) that only exist in MySQL 8+. The production version of YUL ArchivesSpace should be upgraded to MySQL 8 in early 2021.
 
-::Column				Description				        Type::
-id						The archival object id			int
-resource_note_text		The resource-level note		longtext
-lvl						The note level				int
-path					The restriction text hierarchy	longtext
-type_path				The restriction type hierarchy	longtext
-end_path				The restriction date hierarchy	longtext
+| Column | Description | Type |
+| ------------ | ------------ | ------------ |
+|id						The archival object id			int
+|resource_note_text		The resource-level note		longtext
+|lvl						The note level				int
+|path					The restriction text hierarchy	longtext
+|type_path				The restriction type hierarchy	longtext
+|end_path				The restriction date hierarchy	longtext
 
 ### `hierarchy`
 This table is populated by running the `hierarchies.sql` query against the ArchivesSpace database. The `hierarchies` table is a view that only exists in a local/test version of YUL ArchivesSpace, as it requires SQL common table expressions (CTEs) that only exist in MySQL 8+. The production version of YUL ArchivesSpace should be upgraded to MySQL 8 in early 2021.
 
-::Column				Description				        Type::
-id						The archival object id			int
-root_record_id			The resource id				int
-repo_id					The repository id				int
-full_path					The full hierarchy				longtext
-lvl						The hierarchical level			int
+| Column | Description | Type |
+| ------------ | ------------ | ------------ |
+|id						The archival object id			int
+|root_record_id			The resource id				int
+|repo_id					The repository id				int
+|full_path					The full hierarchy				longtext
+|lvl						The hierarchical level			int
 
 ### `collection`
 This table is populated by extracting data from Preservica collection XML files. The collection IDs are stored in notes within ArchivesSpace archival object records, and are extracted by running the `get_collection_ids.sql` query against the ArchivesSpace database. 
 
-::Column				Description				        Type::
-id						Preservica collection id		varchar(255)
-parent_collection_id		Preservica parent collection	varchar(255)
-collection_code			Preservica collection code		varchar(255)	security_tag				Preservica security tag		varchar(255)
-title						Preservica collection title		varchar(8704)
-create_time				Local database create time	timestamp
-m_time					Local database mod time		timestamp
+| Column | Description | Type |
+| ------------ | ------------ | ------------ |
+|id						Preservica collection id		varchar(255)
+|parent_collection_id		Preservica parent collection	varchar(255)
+|collection_code			Preservica collection code		varchar(255)	
+|security_tag				Preservica security tag		varchar(255)
+|title						Preservica collection title		varchar(8704)
+|create_time				Local database create time	timestamp
+|m_time					Local database mod time		timestamp
 
 ### `deliverable_unit`
 This table is populated by extracting data from Preservica deliverable unit XML files. The deliverable unit IDs are stored in digital object records in ArchivesSpace, and are extracted by running the `get_deliverable_unit_ids.sql` query against the  ArchivesSpace database.
 
-::Column				Description				        Type::
+| Column | Description | Type |
+| ------------ | ------------ | ------------ |
 id						The digital object id			int
 collection_id				The Preservica collection id	varchar(255)
 parent_deliverable_unit	The parent deliverable unit id	varchar(255)
@@ -101,7 +108,8 @@ m_time					Local database mod time		timestamp
 ### `manifestation`
 This table is populated by extracting data from Preservica deliverable unit XML files.
 
-::Column				Description				        Type::
+| Column | Description | Type |
+| ------------ | ------------ | ------------ |
 id						Preservica  manifestation id	varchar(255)
 deliverable_unit_id		Deliverable unit id			varchar(255)	typeref					The manifestation type		varchar(255)
 summary				Preservica collection title		varchar(8704)
@@ -111,7 +119,8 @@ m_time					Local database mod time		timestamp
 ### `digital_file`
 This table is populated by extracting data from Preservica digital file XML files. The list of digital files is derived from Preservica deliverable unit XML files.
 
-::Column				Description				        Type::
+| Column | Description | Type |
+| ------------ | ------------ | ------------ |
 id						The digital file id				int
 manifestation_id			The manifestation id			int
 file_set_id				The file set id			 	int
