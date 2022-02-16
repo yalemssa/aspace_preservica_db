@@ -2,9 +2,11 @@
 A reporting database for collating and doing stuff with ArchivesSpace and Preservica metadata
 
 ## Tables
+
 The tables in the database and how they are generated
 
-### `archival_object`
+#### `archival_object`
+
 This table is populated by running the `archival_object_table.sql` query against the ArchivesSpace database.
 
 
@@ -25,7 +27,7 @@ This table is populated by running the `archival_object_table.sql` query against
 | create_time              | ArchivesSpace creation time    | timestamp    |
 | m_time                   | ArchivesSpace last modified    | timestamp    |
 
-### `digital_object`
+#### `digital_object`
 This table is populated by running the `digital_object_table.sql` query against the ArchivesSpace database.
 
 | Column                   | Description       				| Type         |
@@ -39,20 +41,22 @@ This table is populated by running the `digital_object_table.sql` query against 
 | create_time			   | ArchivesSpace creation time	| timestamp    |
 | m_time				   | ArchivesSpace creation time	| timestamp    |
 
-### `resource`
-This table is populated by running the `resource_table.sql` query against the ArchivesSpace database.
+#### `digital_object_component`
+This table is populated by running the `digital_object_component_table.sql` query against the ArchivesSpacee database.
 
 | Column                   | Description       				| Type         |
 | ------------------------ | ------------------------------ | ------------ |
-| id					   | The resource id				| int          |
-| call_number			   | The call number				| varchar(255) |
-| title					   | The resource title				| varchar(8704)|
-| publish				   | 1 published, 0 unpublished	    | int          |
-| suppressed			   | 1 suppressed, 0 not			| int          |
+| id					   | The digital object component id| int          |
+| repo_id                  | The repository id 				| int 		   |
+| root_record_id           | The root digital object id 	| int 		   |
+| parent_id                | The parent digital object id 	| int          |
+| component_id             | The component unique id 		| varchar(255) |
+| title                    | The component title     		| varchar(8704)|
+| publish                  | 1 published, 0 unpublished 	| int 		   |
 | create_time			   | ArchivesSpace creation time	| timestamp    |
 | m_time				   | ArchivesSpace creation time	| timestamp    |
 
-### `restriction`
+#### `restriction`
 This table is populated by running the `restrictions_table.sql` query against the ArchivesSpace database. This query can only be run on a local/test version of YUL ArchivesSpace, as it requires SQL common table expressions (CTEs) that only exist in MySQL 8+. The production version of YUL ArchivesSpace should be upgraded to MySQL 8 in early 2021.
 
 | Column                   | Description       				| Type         |
@@ -64,7 +68,7 @@ This table is populated by running the `restrictions_table.sql` query against th
 | type_path				   | The restriction type hierarchy	| longtext     |
 | end_path				   | The restriction date hierarchy	| longtext     |
 
-### `hierarchy`
+#### `hierarchy`
 This table is populated by running the `hierarchies.sql` query against the ArchivesSpace database. The `hierarchies` table is a view that only exists in a local/test version of YUL ArchivesSpace, as it requires SQL common table expressions (CTEs) that only exist in MySQL 8+. The production version of YUL ArchivesSpace should be upgraded to MySQL 8 in early 2021.
 
 | Column                   | Description       				| Type         |
@@ -75,7 +79,7 @@ This table is populated by running the `hierarchies.sql` query against the Archi
 | full_path				   | The full hierarchy				| longtext     |
 | lvl					   | The hierarchical level			| int          |
 
-### `collection`
+#### `collection`
 This table is populated by extracting data from Preservica collection XML files. The collection IDs are stored in notes within ArchivesSpace archival object records, and are extracted by running the `get_collection_ids.sql` query against the ArchivesSpace database. 
 
 | Column                   | Description       				| Type         |
@@ -88,7 +92,7 @@ This table is populated by extracting data from Preservica collection XML files.
 | create_time			   | Local database create time		| timestamp    |
 | m_time				   | Local database last modified	| timestamp    |
 
-### `deliverable_unit`
+#### `deliverable_unit`
 This table is populated by extracting data from Preservica deliverable unit XML files. The deliverable unit IDs are stored in digital object records in ArchivesSpace, and are extracted by running the `get_deliverable_unit_ids.sql` query against the  ArchivesSpace database.
 
 | Column                    | Description       			 | Type         |
@@ -105,7 +109,7 @@ This table is populated by extracting data from Preservica deliverable unit XML 
 | create_time				| Local database create time	 | timestamp    |
 | m_time					| Local database last modified	 | timestamp    |
 
-### `manifestation`
+#### `manifestation`
 This table is populated by extracting data from Preservica deliverable unit XML files.
 
 | Column                   | Description       				| Type         |
@@ -117,7 +121,7 @@ This table is populated by extracting data from Preservica deliverable unit XML 
 | create_time			   | Local database create time		| timestamp    |
 | m_time				   | Local database last modified	| timestamp    |
 
-### `digital_file`
+#### `digital_file`
 This table is populated by extracting data from Preservica digital file XML files. The list of digital files is derived from Preservica deliverable unit XML files.
 
 | Column                   | Description       				| Type         |
@@ -136,24 +140,66 @@ This table is populated by extracting data from Preservica digital file XML file
 | m_time				   | Local database last modified	| timestamp    |
 
 ## Extracting Data from Source Databases
+
+How to extract data from ArchivesSpace and Preservica
+
 ### ArchivesSpace
-Data is extracted from ArchivesSpace via several SQL queries.
+
+Data is extracted from ArchivesSpace via several SQL queries
 
 ### Preservica
+
 Data is extracted from Preservica by calling the Preservica API, as access to the Preservica database is restricted.
 
 ## Initializing the `aspace_preservica_db` Database
+
+How to create and populate the database using extracted data from ArchivesSpace and Preservica
+
 ### Run `process_xml_for_db.py`
+
 The first step in initializing the `aspace_preservica_db` database is running the `process_xml_for_db.py` script on extracted Preservica XML files. 
 
 ### Run `db_manager.py`
+
 Once the CSV spreadsheets are prepared for ingest, it is time to run the `db_manager.py` script to create and populate the database.
 
 ### Run SQL updates to fix field formatting
+
 After the data is ingested, a little bit of clean-up is necessary.
 
 ### Derive parent deliverable unit data
 
 ## Updating the `aspace_preservica_db` Database
+
 ### Checking for new data
+
 ### Adding new data to the database
+
+### Design Notes and To-Dos
+
+
+#### Reconciling missing data
+
+Some data was missed during the initial load:
+
+* Collection data
+* Child deliverable unit data
+* Digital object component data
+* Restriction data
+
+Consider re-designing manifestation table, since there are duplicate manifestation IDs; or at least sort out those issues.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

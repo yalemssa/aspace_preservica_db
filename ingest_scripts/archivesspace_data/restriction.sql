@@ -1,0 +1,1 @@
+SELECT * FROM archivesspace.access_restricts_hierarchies
