@@ -14,7 +14,7 @@ def main():
 		3. Download all deliverable units using the preservica_metadata_file_picker.py function. Be sure to include the includeNestedLinks parameter in the config file's params flag in order to retrieve all manifestations and digital file links.
 	'''
 	input("Press enter to download deliverable units... ")
-	get_deliverable_unit_data.main()
+	get_deliverable_unit_data.main(full=False)
 	''' 4. Retrieve manifestation data by running the extract_new_data.get_manifestations_from_dus function against the deliverable unit XML folder
 		5. Download manifestation records using the preservica_metadata_file_picker.py script
 	'''

@@ -212,15 +212,18 @@ def run_cleanup(cfg: dict, current_ingest_version: int):
         folders from the previous ingest, which should contain ALL digital file and manifestation XML files
     3.) Move the digital file and manifestation folders from the previous ingest to the xml_data folder for the current ingest
     4.) Delete any empty folders as needed'''
-    move_manifestation_files(cfg)
-    move_digital_files(cfg)
-    move_dus_and_collections_to_xml_data(cfg)
-    move_dig_files_and_manifestations_to_xml_data(cfg)
-    move_reports_to_ingested_folder(cfg)
-    delete_empty_folders(cfg)
+    try:
+        move_manifestation_files(cfg)
+        move_digital_files(cfg)
+        move_dus_and_collections_to_xml_data(cfg)
+        move_dig_files_and_manifestations_to_xml_data(cfg)
+        move_reports_to_ingested_folder(cfg)
+        #delete_empty_folders(cfg)
+        pass
     # updates for the next ingest
-    update_config(cfg, current_ingest_version)
-    create_directories(cfg)
+    finally:
+        update_config(cfg, current_ingest_version)
+        create_directories(cfg)
 
 def main(ingest_version):
     try:
@@ -234,4 +237,4 @@ def main(ingest_version):
         print(traceback.format_exc())
 
 if __name__ == "__main__":
-    main()
+    main(15)

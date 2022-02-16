@@ -111,6 +111,11 @@ def get_new_digital_files(cfg):
     compared_folders = compare_folders(cfg.get('last_ingest_digital_file_metadata_folder'), digital_file_data)
     return compared_folders
 
+def get_new_deliverable_units(cfg):
+    deliverable_unit_data = get_dus_from_collections(cfg)
+    compared_folders = compare_folders(cfg.get('last_ingest_deliverable_unit_metadata_folder'), deliverable_unit_data)
+    return compared_folders
+
 '''
 Functions to prepare database tables
 

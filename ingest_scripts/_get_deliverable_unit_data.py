@@ -7,8 +7,11 @@ import _xml_tools as xml_tools
 from utilities import utilities as u
 
 
-def get_deliverable_units(cfg):
-    entries = xml_tools.get_dus_from_collections(cfg)
+def get_deliverable_units(cfg, full):
+    if not full:
+        entries = xml_tools.get_new_deliverable_units(cfg)
+    else:
+        entries = xml_tools.get_dus_from_collections(cfg)
     fileobject, csvoutfile = u.opencsvout(cfg.get('deliverable_unit_output_csv'))
     csvoutfile.writerow(['direct_download_link'])
     csvoutfile.writerows(entries)
